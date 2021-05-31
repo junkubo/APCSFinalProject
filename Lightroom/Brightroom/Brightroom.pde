@@ -1,4 +1,8 @@
 HScrollbar hs1;
+HScrollbar hs2;
+HScrollbar hs3;
+HScrollbar hs4;
+HScrollbar hs5;
 public class Kernel {
   float[][] kernel;
   public Kernel(float[][] init) {kernel = init;}
@@ -107,6 +111,7 @@ class HScrollbar {
 
 void apply(Kernel[] adjustments, PImage car, PImage output) {
   for (int i = 0; i <= adjustments.length - 1; i++) {
+    //print("Test of apply: " + i + "  ");
     adjustments[i].imageApply(car, output);
   }
 }
@@ -119,32 +124,86 @@ void draw() {
   PImage output = car.copy();
   hs1.update();
   hs1.display();
-  print(hs1.spos + "   ");
+  hs2.update();
+  hs2.display();
+  hs3.update();
+  hs3.display();
+  hs4.update();
+  hs4.display();
+  hs5.update();
+  hs5.display();
   //convert hs1.spos to 0-1 scale factor
-  float scale_factor = hs1.spos/width * 2 - 1;
+  float scale_factor = hs1.spos/width;
+  float scale2 = hs2.spos/width * 2;
+  float scale3 = hs3.spos/width * 2;
+  //print("scale_factor: " + scale_factor + "  ");
+  //print("scale2: " + scale2 + "  ");
   
-  Kernel emboss = new Kernel(new float[][] {{-2 * scale_factor, -1 * scale_factor, 0 * scale_factor}, {-1 * scale_factor, 0 * scale_factor + 1, 1 * scale_factor}, {0 * scale_factor, 1 * scale_factor, 2 * scale_factor}});
+  //apply emboss
+  
+  float[][] conv = new float[][] {{-2 * scale_factor, -1 * scale_factor, 0 * scale_factor}, {-1 * scale_factor, 0 * scale_factor + 1, 1 * scale_factor}, {0 * scale_factor, 1 * scale_factor, 2 * scale_factor}};
+  
+  Kernel emboss = new Kernel(conv);
+  //Kernel emboss = new Kernel(new float[][] {{-2 * scale_factor, -1 * scale_factor, 0 * scale_factor}, {-1 * scale_factor, 0 * scale_factor + 1, 1 * scale_factor}, {0 * scale_factor, 1 * scale_factor, 2 * scale_factor}});
+  //apply brightness
+  conv[1][1] *= scale2;
+  //Kernel brightness = new Kernel(new float[][] {{-2 * scale_factor, -1 * scale_factor, 0 * scale_factor}, {-1 * scale_factor, (0 * scale_factor + 1) * scale2, 1 * scale_factor}, {0 * scale_factor, 1 * scale_factor, 2 * scale_factor}});
+  Kernel brightness = new Kernel(conv);
+  
+  //apply sharpness
+  conv[0][0] = 0; conv[0][1] *= (-1 * scale3); conv[0][2] = 0;
+  conv[1][0] *= (-1 * scale3); conv[1][1] *= (4 * scale3); conv[1][2] *= (-1 * scale3);
+  conv[2][0] = 0; conv[2][1] *= (-1 * scale3); conv[2][2] = 0;
+  
+  Kernel sharpness = new Kernel(conv);
+  
   //emboss.imageApply(car,output);
-  Kernel[] adjustments = new Kernel[1];
+  Kernel[] adjustments = new Kernel[3];
   adjustments[0] = emboss;
+  adjustments[1] = brightness;
+  adjustments[2] = sharpness;
   apply(adjustments, car, output);
+  //apply(adjustments, output, output);
   image(car, 0, 0);
   image(output, car.width, 0);
+  // labels
+  textSize(16);
+  text("Emboss", width/2, height/2+20); 
+  fill(0, 102, 153);
+  textSize(16);
+  text("Brightness", width/2, height/2+65); 
+  fill(0, 102, 153);
+  textSize(16);
+  text("Sharpness", width/2, height/2+105); 
+  fill(0, 102, 153);
+  textSize(16);
+  text("Emboss", width/2, height/2+145); 
+  fill(0, 102, 153);
+  textSize(16);
+  text("Emboss", width/2, height/2+185); 
+  fill(0, 102, 153);
   
 }
 
 void setup() {
-  size(1450, 1000);
   PImage car = loadImage("redcar.jpg");
   PImage output = car.copy();
+  size(1920, 1080);
   Kernel emboss = new Kernel(new float[][] {{-2, -1 , 0}, {-1, 1, 1}, {0, 1, 2}});
+  Kernel brightness = new Kernel(new float[][] {{0, 0, 0}, {0, 1, 0}, {0, 0, 0}});
+  Kernel sharpness = new Kernel(new float[][] {{0, -1, 0}, {-1, 4, -1}, {0, -1, 0}});
   //emboss.imageApply(car,output);
-  Kernel[] adjustments = new Kernel[1];
+  Kernel[] adjustments = new Kernel[2];
   adjustments[0] = emboss;
+  adjustments[1] = brightness;
   apply(adjustments, car, output);
   //hs1 = new HScrollbar(0, height/2-8, width, 16, 16);
-  hs1 = new HScrollbar(0, height/2-8, width, 16, 8);
- 
+  hs1 = new HScrollbar(0, height/2 + 40, width, 16, 8);
+  hs2 = new HScrollbar(0, height/2 + 80, width, 16, 8);
+  hs3 = new HScrollbar(0, height/2 + 120, width, 16, 8);
+  hs4 = new HScrollbar(0, height/2 + 160, width, 16, 8);
+  hs5 = new HScrollbar(0, height/2 + 200, width, 16, 8);
+  //text("word",width/2, height/2+8);
   image(car, 0, 0);
   image(output, car.width, 0);
 }
