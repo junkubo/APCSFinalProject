@@ -33,6 +33,39 @@ public class Kernel {
   }
 }
 
+void saturateImage(float scale, PImage source, PImage destination) {
+    for (int y = 0; y < source.height; y++) {
+        for (int x = 0; x < source.width; x++) {
+            destination.set(x, y, saturatePixel(scale, source, x, y));
+    }
+  }
+  colorMode(RGB, 255);
+}
+void hueImage(float scale, PImage source, PImage destination) {
+    for (int y = 0; y < source.height; y++) {
+        for (int x = 0; x < source.width; x++) {
+            destination.set(x, y, huePixel(scale, source, x, y));
+    }
+  }
+  colorMode(RGB, 255);
+}
+
+color saturatePixel(float scale, PImage source, int x, int y) {
+    colorMode(HSB, 255);
+    float h = hue(source.get(x, y));
+    float s = saturation(source.get(x, y));
+    float l = brightness(source.get(x, y));
+    return color(h, s + scale * 100, l);
+}
+
+color huePixel(float scale, PImage source, int x, int y) {
+    colorMode(HSB, 255);
+    float h = hue(source.get(x, y));
+    float s = saturation(source.get(x, y));
+    float l = brightness(source.get(x, y));
+    return color(constrain(h + scale * 100, 0, 255), s, l);
+}
+
 class HScrollbar {
   int swidth, sheight;    // width and height of bar
   float xpos, ypos;       // x and y position of bar
@@ -110,9 +143,11 @@ class HScrollbar {
 }
 
 void apply(Kernel[] adjustments, PImage car, PImage output) {
+  PImage temp = car.copy();
   for (int i = 0; i <= adjustments.length - 1; i++) {
     //print("Test of apply: " + i + "  ");
-    adjustments[i].imageApply(car, output);
+    adjustments[i].imageApply(temp, output);
+    temp = output.copy();
   }
 }
 
@@ -122,6 +157,7 @@ void draw() {
   line(0, height/2, width, height/2);
   PImage car = loadImage("redcar.jpg");
   PImage output = car.copy();
+  PImage temp = car.copy();
   hs1.update();
   hs1.display();
   hs2.update();
@@ -136,33 +172,37 @@ void draw() {
   float scale_factor = hs1.spos/width;
   float scale2 = hs2.spos/width * 2;
   float scale3 = hs3.spos/width * 2;
+  float scale4 = hs4.spos/width * 5 - 2.5;
+  float scale5 = hs5.spos/width * 5 - 2.5;
   //print("scale_factor: " + scale_factor + "  ");
   //print("scale2: " + scale2 + "  ");
   
   //apply emboss
   
-  float[][] conv = new float[][] {{-2 * scale_factor, -1 * scale_factor, 0 * scale_factor}, {-1 * scale_factor, 0 * scale_factor + 1, 1 * scale_factor}, {0 * scale_factor, 1 * scale_factor, 2 * scale_factor}};
   
-  Kernel emboss = new Kernel(conv);
-  //Kernel emboss = new Kernel(new float[][] {{-2 * scale_factor, -1 * scale_factor, 0 * scale_factor}, {-1 * scale_factor, 0 * scale_factor + 1, 1 * scale_factor}, {0 * scale_factor, 1 * scale_factor, 2 * scale_factor}});
+  Kernel emboss = new Kernel(new float[][] {{-2 * scale_factor, -1 * scale_factor, 0 * scale_factor}, {-1 * scale_factor, 0 * scale_factor + 1, 1 * scale_factor}, {0 * scale_factor, 1 * scale_factor, 2 * scale_factor}});
   //apply brightness
-  conv[1][1] *= scale2;
-  //Kernel brightness = new Kernel(new float[][] {{-2 * scale_factor, -1 * scale_factor, 0 * scale_factor}, {-1 * scale_factor, (0 * scale_factor + 1) * scale2, 1 * scale_factor}, {0 * scale_factor, 1 * scale_factor, 2 * scale_factor}});
-  Kernel brightness = new Kernel(conv);
   
-  //apply sharpness
-  conv[0][0] = 0; conv[0][1] *= (-1 * scale3); conv[0][2] = 0;
-  conv[1][0] *= (-1 * scale3); conv[1][1] *= (4 * scale3); conv[1][2] *= (-1 * scale3);
-  conv[2][0] = 0; conv[2][1] *= (-1 * scale3); conv[2][2] = 0;
-  
-  Kernel sharpness = new Kernel(conv);
+  Kernel brightness = new Kernel(new float[][] { {0,0,0},{0, scale2, 0},{0,0,0}});
+     
+  Kernel sharpness = new Kernel(new float[][] {{0, -1 * scale3, 0},{-1 * scale3, 5*scale3, -1*scale3},{0, -1* scale3,0}});
   
   //emboss.imageApply(car,output);
   Kernel[] adjustments = new Kernel[3];
   adjustments[0] = emboss;
   adjustments[1] = brightness;
   adjustments[2] = sharpness;
-  apply(adjustments, car, output);
+  //apply(adjustments, car, output);
+  
+  emboss.imageApply(car, output);
+  temp = output.copy();
+  brightness.imageApply(temp, output);
+  temp = output.copy();
+  sharpness.imageApply(temp, output);
+  temp = output.copy();
+  saturateImage(scale4, temp, output);
+  temp = output.copy();
+  hueImage(scale5, temp, output);
   //apply(adjustments, output, output);
   image(car, 0, 0);
   image(output, car.width, 0);
@@ -177,10 +217,10 @@ void draw() {
   text("Sharpness", width/2, height/2+105); 
   fill(0, 102, 153);
   textSize(16);
-  text("Emboss", width/2, height/2+145); 
+  text("Saturation", width/2, height/2+145); 
   fill(0, 102, 153);
   textSize(16);
-  text("Emboss", width/2, height/2+185); 
+  text("Hue", width/2, height/2+185); 
   fill(0, 102, 153);
   
 }
