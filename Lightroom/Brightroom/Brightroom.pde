@@ -91,6 +91,7 @@ class HScrollbar {
   }
 
   void update() {
+    int y_lock = 0;
     if (overEvent()) {
       over = true;
     } else {
@@ -98,13 +99,15 @@ class HScrollbar {
     }
     if (mousePressed && over) {
       locked = true;
+      y_lock = mouseY;
     }
     if (!mousePressed) {
       locked = false;
     }
     if (locked) {
       newspos = constrain(mouseX-sheight/2, sposMin, sposMax);
-    }
+      mouseY = y_lock;
+      }
     if (abs(newspos - spos) > 1) {
       spos = spos + (newspos-spos)/loose;
     }
@@ -238,11 +241,11 @@ void setup() {
   adjustments[1] = brightness;
   apply(adjustments, car, output);
   //hs1 = new HScrollbar(0, height/2-8, width, 16, 16);
-  hs1 = new HScrollbar(0, height/2 + 40, width, 16, 8);
-  hs2 = new HScrollbar(0, height/2 + 80, width, 16, 8);
-  hs3 = new HScrollbar(0, height/2 + 120, width, 16, 8);
-  hs4 = new HScrollbar(0, height/2 + 160, width, 16, 8);
-  hs5 = new HScrollbar(0, height/2 + 200, width, 16, 8);
+  hs1 = new HScrollbar(0, height/2 + 40, width, 16, 1);
+  hs2 = new HScrollbar(0, height/2 + 80, width, 16, 1);
+  hs3 = new HScrollbar(0, height/2 + 120, width, 16, 1);
+  hs4 = new HScrollbar(0, height/2 + 160, width, 16, 1);
+  hs5 = new HScrollbar(0, height/2 + 200, width, 16, 1);
   //text("word",width/2, height/2+8);
   image(car, 0, 0);
   image(output, car.width, 0);
