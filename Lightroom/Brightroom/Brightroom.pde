@@ -229,6 +229,7 @@ class Button2 {
   boolean over;           // is the mouse over the slider?
   String button_text;
   String text = "on";
+  boolean only_once = true;
   
   Button2(float xp, float yp, int sw, int sh, String txt, int offset) {
     swidth = sw;
@@ -246,7 +247,7 @@ class Button2 {
     } else {
       over = false;
     }
-    if (mousePressed && over) {
+    if (mousePressed && over && only_once) {
       if (text == "on") {
         text = "off";
         if (button_text == "hs1") hs1_switch = false;
@@ -254,7 +255,7 @@ class Button2 {
         if (button_text == "hs3") hs3_switch = false;
         if (button_text == "hs4") hs4_switch = false;
         if (button_text == "hs5") hs5_switch = false;
-        delay(50);
+        only_once = false;
       } else {
         text = "on";
         if (button_text == "hs1") hs1_switch = true;
@@ -262,11 +263,11 @@ class Button2 {
         if (button_text == "hs3") hs3_switch = true;
         if (button_text == "hs4") hs4_switch = true;
         if (button_text == "hs5") hs5_switch = true;
-        delay(50);
+        only_once = false;
       }
     }
     if (!mousePressed) {
-     
+       only_once = true;
     }
   }
 
