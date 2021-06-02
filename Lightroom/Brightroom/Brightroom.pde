@@ -7,6 +7,19 @@ HScrollbar hs5;
 Button button1;
 Button button2;
 Button button3;
+
+Button2 button_2_1;
+Button2 button_2_2;
+Button2 button_2_3;
+Button2 button_2_4;
+Button2 button_2_5;
+
+boolean hs1_switch = true;
+boolean hs2_switch = true;
+boolean hs3_switch = true;
+boolean hs4_switch = true;
+boolean hs5_switch = true;
+
 PImage car;
 PImage output;
 PImage temp;
@@ -208,9 +221,80 @@ class Button {
     fill(255);
     text(button_text, xpos+20 + text_offset, ypos+30);
   }
-
 }
 
+class Button2 {
+  int swidth, sheight, text_offset;    // width and height of bar
+  float xpos, ypos;       // x and y position of bar
+  boolean over;           // is the mouse over the slider?
+  String button_text;
+  String text = "on";
+  
+  Button2(float xp, float yp, int sw, int sh, String txt, int offset) {
+    swidth = sw;
+    sheight = sh;
+    xpos = xp;
+    ypos = yp-sheight/2;
+    button_text = txt;
+    text_offset = offset;
+  }
+
+  void update() {
+   
+    if (overEvent()) {
+      over = true;
+    } else {
+      over = false;
+    }
+    if (mousePressed && over) {
+      if (text == "on") {
+        text = "off";
+        if (button_text == "hs1") hs1_switch = false;
+        if (button_text == "hs2") hs2_switch = false;
+        if (button_text == "hs3") hs3_switch = false;
+        if (button_text == "hs4") hs4_switch = false;
+        if (button_text == "hs5") hs5_switch = false;
+        delay(50);
+      } else {
+        text = "on";
+        if (button_text == "hs1") hs1_switch = true;
+        if (button_text == "hs2") hs2_switch = true;
+        if (button_text == "hs3") hs3_switch = true;
+        if (button_text == "hs4") hs4_switch = true;
+        if (button_text == "hs5") hs5_switch = true;
+        delay(50);
+      }
+    }
+    if (!mousePressed) {
+     
+    }
+  }
+
+  float constrain(float val, float minv, float maxv) {
+    return min(max(val, minv), maxv);
+  }
+
+  boolean overEvent() {
+    if (mouseX > xpos && mouseX < xpos+swidth &&
+       mouseY > ypos && mouseY < ypos+sheight) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void display() {
+    noStroke();
+    if (over == true) {
+      fill(100);
+    } else {
+      fill(50);
+    }
+    rect(xpos, ypos, swidth, sheight);
+    fill(255);
+    text(text, xpos+15, ypos+16);
+  }
+}
 
 
 void apply(Kernel[] adjustments, PImage car, PImage output) {
@@ -252,6 +336,16 @@ void draw() {
   button3.update();
   button3.display();
  
+  button_2_1.update();
+  button_2_1.display();
+  button_2_2.update();
+  button_2_2.display();
+  button_2_3.update();
+  button_2_3.display();
+  button_2_4.update();
+  button_2_4.display();
+  button_2_5.update();
+  button_2_5.display();
  
   //convert hs1.spos to 0-1 scale factor
   float scale_factor = hs1.spos/width;
@@ -278,34 +372,43 @@ void draw() {
   adjustments[1] = brightness;
   adjustments[2] = sharpness;
   //apply(adjustments, car, output);
- 
-  emboss.imageApply(car, output);
-  temp = output.copy();
-  brightness.imageApply(temp, output);
-  temp = output.copy();
-  sharpness.imageApply(temp, output);
-  temp = output.copy();
-  saturateImage(scale4, temp, output);
-  temp = output.copy();
-  hueImage(scale5, temp, output);
+  if (hs1_switch) {
+    emboss.imageApply(car, output);
+    temp = output.copy();
+  }
+  if (hs2_switch) {
+    brightness.imageApply(temp, output);
+    temp = output.copy();
+  }
+  if (hs3_switch) {
+    sharpness.imageApply(temp, output);
+    temp = output.copy();
+  }
+  if (hs4_switch) {
+    saturateImage(scale4, temp, output);
+    temp = output.copy();
+  }
+  if (hs5_switch) {
+    hueImage(scale5, temp, output);
+  }
   //apply(adjustments, output, output);
   image(car, 0, 0);
   image(output, car.width, 0);
   // labels
   textSize(16);
   fill(0, 0, 0);
-  text("Emboss", width/2, height/2+25);
+  text("Emboss", width/2-85, height/2+25);
   textSize(16);
-  text("Brightness", width/2, height/2+65);
+  text("Brightness", width/2-85, height/2+65);
   fill(0, 0, 0);
   textSize(16);
-  text("Sharpness", width/2, height/2+105);
+  text("Sharpness", width/2-85, height/2+105);
   fill(0, 0, 0);
   textSize(16);
-  text("Saturation", width/2, height/2+145);
+  text("Saturation", width/2-85, height/2+145);
   fill(0, 0, 0);
   textSize(16);
-  text("Hue", width/2, height/2+185);
+  text("Hue", width/2-85, height/2+185);
   fill(0, 0, 0);  
   // buttons
    
@@ -333,17 +436,25 @@ void setup() {
   Kernel[] adjustments = new Kernel[2];
   adjustments[0] = emboss;
   adjustments[1] = brightness;
-  apply(adjustments, car, output);
+  //apply(adjustments, car, output);  don't apply effects at first. 
   //hs1 = new HScrollbar(0, height/2-8, width, 16, 16);
-  hs1 = new HScrollbar(0, height/2 + 40, width, 16, 1);
-  hs2 = new HScrollbar(0, height/2 + 80, width, 16, 1);
-  hs3 = new HScrollbar(0, height/2 + 120, width, 16, 1);
-  hs4 = new HScrollbar(0, height/2 + 160, width, 16, 1);
-  hs5 = new HScrollbar(0, height/2 + 200, width, 16, 1);
+  hs1 = new HScrollbar(0, height/2 + 40, width-100, 16, 1);
+  hs2 = new HScrollbar(0, height/2 + 80, width-100, 16, 1);
+  hs3 = new HScrollbar(0, height/2 + 120, width-100, 16, 1);
+  hs4 = new HScrollbar(0, height/2 + 160, width-100, 16, 1);
+  hs5 = new HScrollbar(0, height/2 + 200, width-100, 16, 1);
   //text("word",width/2, height/2+8);
   button1 = new Button(width/2-50, height/2.0 + 245,  100, 50, "Reset", 7);
   button2 = new Button(width/2-50, height/2.0 + 315,  100, 50, "Save", 10);
   button3 = new Button(width/2-50, height/2.0 + 385,  100, 50, "Undo", 9);
+ 
+  button_2_1 = new Button2(width - 80, height/2.0 + 40, 50,20, "hs1", 0);
+  button_2_2 = new Button2(width - 80, height/2.0 + 80, 50,20, "hs2", 0);
+  button_2_3 = new Button2(width - 80, height/2.0 + 120, 50,20, "hs3", 0);
+  button_2_4 = new Button2(width - 80, height/2.0 + 160, 50,20, "hs4", 0);
+  button_2_5 = new Button2(width - 80, height/2.0 + 200, 50,20, "hs5", 0);
+  
+  
   image(car, 0, 0);
   image(output, car.width, 0);
 }
