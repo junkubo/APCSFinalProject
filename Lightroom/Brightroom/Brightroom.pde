@@ -4,6 +4,8 @@ HScrollbar hs3;
 HScrollbar hs4;
 HScrollbar hs5;
 
+boolean only_onebar = true;
+
 Button button1;
 Button button2;
 Button button3;
@@ -97,14 +99,15 @@ class HScrollbar {
   boolean locked;
   float ratio;
 
-  HScrollbar (float xp, float yp, int sw, int sh, int l) {
+  HScrollbar (float xp, float yp, int sw, int sh, int l, float start) {
     swidth = sw;
     sheight = sh;
     int widthtoheight = sw - sh;
     ratio = (float)sw / (float)widthtoheight;
     xpos = xp;
     ypos = yp-sheight/2;
-    spos = xpos + swidth/2 - sheight/2;
+    spos = start * (xpos + swidth/2 - sheight/2);
+    
     newspos = spos;
     sposMin = xpos;
     sposMax = xpos + swidth - sheight;
@@ -117,13 +120,16 @@ class HScrollbar {
       over = true;
     } else {
       over = false;
+
     }
-    if (mousePressed && over) {
+    if (mousePressed && over && only_onebar) {
       locked = true;
       y_lock = mouseY;
+      only_onebar = false;
     }
     if (!mousePressed) {
       locked = false;
+      only_onebar = true;
     }
     if (locked) {
       newspos = constrain(mouseX-sheight/2, sposMin, sposMax);
@@ -439,11 +445,11 @@ void setup() {
   adjustments[1] = brightness;
   //apply(adjustments, car, output);  don't apply effects at first. 
   //hs1 = new HScrollbar(0, height/2-8, width, 16, 16);
-  hs1 = new HScrollbar(0, height/2 + 40, width-100, 16, 1);
-  hs2 = new HScrollbar(0, height/2 + 80, width-100, 16, 1);
-  hs3 = new HScrollbar(0, height/2 + 120, width-100, 16, 1);
-  hs4 = new HScrollbar(0, height/2 + 160, width-100, 16, 1);
-  hs5 = new HScrollbar(0, height/2 + 200, width-100, 16, 1);
+  hs1 = new HScrollbar(0, height/2 + 40, width-100, 16, 1, 0);
+  hs2 = new HScrollbar(0, height/2 + 80, width-100, 16, 1, 1);
+  hs3 = new HScrollbar(0, height/2 + 120, width-100, 16, 1, 1);
+  hs4 = new HScrollbar(0, height/2 + 160, width-100, 16, 1, 1);
+  hs5 = new HScrollbar(0, height/2 + 200, width-100, 16, 1, 1);
   //text("word",width/2, height/2+8);
   button1 = new Button(width/2-50, height/2.0 + 245,  100, 50, "Reset", 7);
   button2 = new Button(width/2-50, height/2.0 + 315,  100, 50, "Save", 10);
