@@ -182,6 +182,7 @@ class Button {
   float xpos, ypos;       // x and y position of bar
   boolean over;           // is the mouse over the slider?
   String button_text;
+  boolean button_once = true;
 
   Button (float xp, float yp, int sw, int sh, String txt, int offset) {
     swidth = sw;
@@ -199,25 +200,39 @@ class Button {
     } else {
       over = false;
     }
-    if (mousePressed && over) {
+    if (mousePressed && over && button_once) {
       if (button_text == "Reset") setup();
       if (button_text == "Save") {
         float[] spos_t = {hs1.xpos, hs2.xpos, hs3.xpos, hs4.xpos, hs5.xpos};
-        hs1.xpos = spos_t[0]; hs2.xpos = spos_t[1]; hs3.xpos = spos_t[2]; hs4.xpos = spos_t[3]; hs5.xpos = spos_t[4];
-        
+        spos_list.add(spos_t);
+        print(spos_list.size() + " ");
+      }
+      if (button_text == "Undo") {
+        if (spos_list.size() > 0) {
+          float[] spos_t = spos_list.remove(spos_list.size()-1);
+          hs1.xpos = spos_t[0]; hs2.xpos = spos_t[1]; hs3.xpos = spos_t[2]; hs4.xpos = spos_t[3]; hs5.xpos = spos_t[4];
        
-        hs1.update(); hs1.display();
-        hs2.update(); hs2.display();
-        hs3.update(); hs3.display();
-        hs4.update(); hs4.display();
-        hs5.update(); hs5.display();
-      }     
+          hs1 = new HScrollbar(0, height/2 + 40, width-100, 16, 1, 0);
+          hs2 = new HScrollbar(0, height/2 + 80, width-100, 16, 1, 1);
+          hs3 = new HScrollbar(0, height/2 + 120, width-100, 16, 1, 1);
+          hs4 = new HScrollbar(0, height/2 + 160, width-100, 16, 1, 1);
+          hs5 = new HScrollbar(0, height/2 + 200, width-100, 16, 1, 1);
+         
+          hs1.update(); hs1.display();
+          hs2.update(); hs2.display();
+          hs3.update(); hs3.display();
+          hs4.update(); hs4.display();
+          hs5.update(); hs5.display();
+        }
+        
+      }
       if (button_text == "Export") {
         forExport.save("Export.tif");
       }
+      button_once = false;
     }
     if (!mousePressed) {
-     
+      button_once = true;
     }
   }
 
