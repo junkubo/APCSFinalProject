@@ -9,6 +9,7 @@ boolean only_onebar = true;
 Button button1;
 Button button2;
 Button button3;
+Button button4;
 
 Button2 button_2_1;
 Button2 button_2_2;
@@ -342,6 +343,8 @@ void draw() {
   button2.display();
   button3.update();
   button3.display();
+  button4.update();
+  button4.display();
  
   button_2_1.update();
   button_2_1.display();
@@ -454,6 +457,7 @@ void setup() {
   button1 = new Button(width/2-50, height/2.0 + 245,  100, 50, "Reset", 7);
   button2 = new Button(width/2-50, height/2.0 + 315,  100, 50, "Save", 10);
   button3 = new Button(width/2-50, height/2.0 + 385,  100, 50, "Undo", 9);
+  button4 = new Button(width/2-50, height/2.0 + 455,  100, 50, "Export", 5);
  
   button_2_1 = new Button2(width - 80, height/2.0 + 40, 50,20, "hs1", 0);
   button_2_2 = new Button2(width - 80, height/2.0 + 80, 50,20, "hs2", 0);
