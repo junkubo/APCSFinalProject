@@ -26,6 +26,7 @@ boolean hs5_switch = true;
 PImage car;
 PImage output;
 PImage temp;
+PImage forExport;
 
 public class Kernel {
   float[][] kernel;
@@ -198,6 +199,10 @@ class Button {
     }
     if (mousePressed && over) {
       if (button_text == "Reset") setup();
+      
+      if (button_text == "Export") {
+        forExport.save("Export.tif");
+      }
     }
     if (!mousePressed) {
      
@@ -401,6 +406,9 @@ void draw() {
   if (hs5_switch) {
     hueImage(scale5, temp, output);
   }
+  // save copy of altered image for export
+  forExport = output.copy();
+  
   //apply(adjustments, output, output);
   image(car, 0, 0);
   image(output, car.width, 0);
@@ -438,6 +446,7 @@ void setup() {
   if (car.width > 960) car.resize(960, 0);
   //PImage output = car.copy();
   output = car.copy();
+  forExport = car.copy();
   size(1920, 1080);
   Kernel emboss = new Kernel(new float[][] {{-2, -1 , 0}, {-1, 1, 1}, {0, 1, 2}});
   Kernel brightness = new Kernel(new float[][] {{0, 0, 0}, {0, 1, 0}, {0, 0, 0}});
