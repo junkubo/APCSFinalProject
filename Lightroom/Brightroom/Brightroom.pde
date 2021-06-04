@@ -23,6 +23,8 @@ boolean hs3_switch = true;
 boolean hs4_switch = true;
 boolean hs5_switch = true;
 
+ArrayList<float[]> spos_list = new ArrayList<float[]>();
+
 PImage car;
 PImage output;
 PImage temp;
@@ -199,7 +201,17 @@ class Button {
     }
     if (mousePressed && over) {
       if (button_text == "Reset") setup();
-      
+      if (button_text == "Save") {
+        float[] spos_t = {hs1.xpos, hs2.xpos, hs3.xpos, hs4.xpos, hs5.xpos};
+        hs1.xpos = spos_t[0]; hs2.xpos = spos_t[1]; hs3.xpos = spos_t[2]; hs4.xpos = spos_t[3]; hs5.xpos = spos_t[4];
+        
+       
+        hs1.update(); hs1.display();
+        hs2.update(); hs2.display();
+        hs3.update(); hs3.display();
+        hs4.update(); hs4.display();
+        hs5.update(); hs5.display();
+      }     
       if (button_text == "Export") {
         forExport.save("Export.tif");
       }
