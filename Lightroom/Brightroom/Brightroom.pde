@@ -29,6 +29,7 @@ int crop_x = 0; int crop_y = 0; int crop_xx = 0; int crop_yy = 0;
 ArrayList<float[]> spos_list = new ArrayList<float[]>();
 
 PImage car;
+PImage car2;
 PImage output;
 PImage temp;
 PImage forExport;
@@ -349,7 +350,7 @@ void apply(Kernel[] adjustments, PImage car, PImage output) {
 }
 
 void crop_update() {
-  if (mouseX > car.width && mouseX < (car.width * 2) && mouseY < car.height) {
+  if (mouseX > car.width && mouseX < (car.width + car2.width) && mouseY < car2.height) {
     if (!crop && mousePressed) {
       crop_x = mouseX; crop_y = mouseY;
       crop = true;
@@ -379,7 +380,30 @@ void crop_draw() {
   }
 }
 
+void keyPressed() {
+  if (!crop && crop_rect && key == ' ') {
+    PImage temp_crop = car2.copy();
+    temp_crop.resize(crop_xx - crop_x, crop_yy - crop_y);
+    
+    for (int i = 0; i < temp_crop.width; i++) {
+      for (int j = 0; j < temp_crop.height; j++) {
+        float r = red(car2.get(crop_x - car.width + i, crop_y + j));
+        float g = green(car2.get(crop_x - car.width + i, crop_y + j));
+        float b = blue(car2.get(crop_x - car.width + i, crop_y + j));
+        
+        temp_crop.set(i, j, color(r, g, b));
+      }
+    }
+    car2 = temp_crop.copy();
+    crop_reset();
+  } else if (key == 'c') crop_reset();
+}
 
+void crop_reset() {
+  crop = false;
+  crop_rect = false;
+  crop_x = crop_y = crop_xx = crop_yy = 0;
+}
 
 void draw() {
   background(255);
@@ -391,8 +415,8 @@ void draw() {
   //PImage output = car.copy();
   //PImage temp = car.copy();
  
-  output = car.copy();
-  temp = car.copy();
+  output = car2.copy();
+  temp = car2.copy();
  
   hs1.update();
   hs1.display();
@@ -450,7 +474,7 @@ void draw() {
   adjustments[2] = sharpness;
   //apply(adjustments, car, output);
   if (hs1_switch) {
-    emboss.imageApply(car, output);
+    emboss.imageApply(car2, output);
     temp = output.copy();
   }
   if (hs2_switch) {
@@ -511,6 +535,7 @@ void setup() {
   if (car.width > 960) car.resize(960, 0);
   //PImage output = car.copy();
   output = car.copy();
+  car2 = car.copy();
   forExport = car.copy();
   size(1920, 1080);
   Kernel emboss = new Kernel(new float[][] {{-2, -1 , 0}, {-1, 1, 1}, {0, 1, 2}});
