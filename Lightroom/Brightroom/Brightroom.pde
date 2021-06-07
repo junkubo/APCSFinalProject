@@ -23,6 +23,9 @@ boolean hs3_switch = true;
 boolean hs4_switch = true;
 boolean hs5_switch = true;
 
+boolean crop = false; boolean crop_rect = false;
+int crop_x = 0; int crop_y = 0; int crop_xx = 0; int crop_yy = 0;
+
 ArrayList<float[]> spos_list = new ArrayList<float[]>();
 
 PImage car;
@@ -336,7 +339,6 @@ class Button2 {
   }
 }
 
-
 void apply(Kernel[] adjustments, PImage car, PImage output) {
   PImage temp = car.copy();
   for (int i = 0; i <= adjustments.length - 1; i++) {
@@ -345,6 +347,39 @@ void apply(Kernel[] adjustments, PImage car, PImage output) {
     temp = output.copy();
   }
 }
+
+void crop_update() {
+  if (mouseX > car.width && mouseX < (car.width * 2) && mouseY < car.height) {
+    if (!crop && mousePressed) {
+      crop_x = mouseX; crop_y = mouseY;
+      crop = true;
+      crop_rect = true;
+    }
+    if (crop && mousePressed) {
+      crop_xx = mouseX;
+      crop_yy = mouseY;
+    }
+    
+    if (crop && !mousePressed) {
+      crop = false;
+    }
+  }
+}
+
+void crop_draw() {
+  if (crop || crop_rect) {
+    if (crop_xx > crop_x && crop_yy > crop_y) {
+      stroke(0);
+      noFill();
+      rect(crop_x, crop_y, crop_xx-crop_x, crop_yy-crop_y);
+      stroke(255);
+      noFill();
+      rect(crop_x+1, crop_y+1, crop_xx-crop_x-2, crop_yy-crop_y-2);
+    } 
+  }
+}
+
+
 
 void draw() {
   background(255);
@@ -439,6 +474,9 @@ void draw() {
   //apply(adjustments, output, output);
   image(car, 0, 0);
   image(output, car.width, 0);
+  
+  crop_update();
+  crop_draw();
   // labels
   textSize(16);
   fill(0, 0, 0);
