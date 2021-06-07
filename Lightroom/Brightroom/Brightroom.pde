@@ -411,6 +411,15 @@ void crop_reset() {
   crop_x = crop_y = crop_xx = crop_yy = 0;
 }
 
+void rresize(float scale6) {
+  print(scale6 + " ");
+  //float new_width = car2.width * scale6;
+  //float new_height = car2.height * scale6;
+  //if (new_width < car.width && new_height < car.height && new_width > 0 && new_height > 0) {
+  //  car2.resize(Math.round(new_width), Math.round(new_height));
+  //}
+}
+
 void draw() {
   background(255);
   stroke(0);
@@ -445,11 +454,11 @@ void draw() {
  
   //convert hs1.spos to 0-1 scale factor
   float scale_factor = hs1.spos/width;
-  float scale2 = hs2.spos/(width-500) * 2;
-  float scale3 = hs3.spos/(width-500) * 2;
-  float scale4 = hs4.spos/(width-500) * 5 - 2.5;
-  float scale5 = hs5.spos/(width-500) * 5 - 2.5;
-  float scale6 = hs6.spos/(width-500) * 2;
+  float scale2 = (hs2.spos/(width-500)) * 2;
+  float scale3 = (hs3.spos/(width-500)) * 2;
+  float scale4 = (hs4.spos/(width-500)) * 5 - 2.5;
+  float scale5 = (hs5.spos/(width-500)) * 5 - 2.5;
+  float scale6 = (hs6.spos/(width-500)) * 2;
   
   
   //apply emboss
@@ -485,6 +494,11 @@ void draw() {
   if (hs5_switch) {
     hueImage(scale5, temp, output);
   }
+  
+  if (hs6_switch) {
+    rresize(scale6);
+  }
+  
   // save copy of altered image for export
   forExport = output.copy();
   
