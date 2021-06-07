@@ -3,6 +3,7 @@ HScrollbar hs2;
 HScrollbar hs3;
 HScrollbar hs4;
 HScrollbar hs5;
+HScrollbar hs6;
 
 boolean only_onebar = true;
 
@@ -16,12 +17,14 @@ Button2 button_2_2;
 Button2 button_2_3;
 Button2 button_2_4;
 Button2 button_2_5;
+Button2 button_2_6;
 
 boolean hs1_switch = true;
 boolean hs2_switch = true;
 boolean hs3_switch = true;
 boolean hs4_switch = true;
 boolean hs5_switch = true;
+boolean hs6_switch = true;
 
 boolean crop = false; boolean crop_rect = false;
 int crop_x = 0; int crop_y = 0; int crop_xx = 0; int crop_yy = 0;
@@ -227,6 +230,7 @@ class Button {
           hs3.update(); hs3.display();
           hs4.update(); hs4.display();
           hs5.update(); hs5.display();
+          hs6.update(); hs6.display();
         }
         
       }
@@ -298,6 +302,7 @@ class Button2 {
         if (button_text == "hs3") hs3_switch = false;
         if (button_text == "hs4") hs4_switch = false;
         if (button_text == "hs5") hs5_switch = false;
+        if (button_text == "hs6") hs6_switch = false;
         only_once = false;
       } else {
         text = "on";
@@ -306,6 +311,7 @@ class Button2 {
         if (button_text == "hs3") hs3_switch = true;
         if (button_text == "hs4") hs4_switch = true;
         if (button_text == "hs5") hs5_switch = true;
+        if (button_text == "hs6") hs6_switch = true;
         only_once = false;
       }
     }
@@ -418,48 +424,35 @@ void draw() {
   output = car2.copy();
   temp = car2.copy();
  
-  hs1.update();
-  hs1.display();
-  hs2.update();
-  hs2.display();
-  hs3.update();
-  hs3.display();
-  hs4.update();
-  hs4.display();
-  hs5.update();
-  hs5.display();
-  button1.update();
-  button1.display();
-  button2.update();
-  button2.display();
-  button3.update();
-  button3.display();
-  button4.update();
-  button4.display();
+  hs1.update(); hs1.display();
+  hs2.update(); hs2.display();
+  hs3.update(); hs3.display();
+  hs4.update(); hs4.display();
+  hs5.update(); hs5.display();
+  hs6.update(); hs6.display();
+  
+  button1.update(); button1.display();
+  button2.update(); button2.display();
+  button3.update(); button3.display();
+  button4.update(); button4.display();
  
-  button_2_1.update();
-  button_2_1.display();
-  button_2_2.update();
-  button_2_2.display();
-  button_2_3.update();
-  button_2_3.display();
-  button_2_4.update();
-  button_2_4.display();
-  button_2_5.update();
-  button_2_5.display();
+  button_2_1.update(); button_2_1.display();
+  button_2_2.update(); button_2_2.display();
+  button_2_3.update(); button_2_3.display();
+  button_2_4.update(); button_2_4.display();
+  button_2_5.update(); button_2_5.display();
+  button_2_6.update(); button_2_6.display();
  
   //convert hs1.spos to 0-1 scale factor
   float scale_factor = hs1.spos/width;
-  float scale2 = hs2.spos/width * 2;
-  float scale3 = hs3.spos/width * 2;
-  float scale4 = hs4.spos/width * 5 - 2.5;
-  float scale5 = hs5.spos/width * 5 - 2.5;
-  //print("scale_factor: " + scale_factor + "  ");
-  //print("scale2: " + scale2 + "  ");
- 
+  float scale2 = hs2.spos/(width-500) * 2;
+  float scale3 = hs3.spos/(width-500) * 2;
+  float scale4 = hs4.spos/(width-500) * 5 - 2.5;
+  float scale5 = hs5.spos/(width-500) * 5 - 2.5;
+  float scale6 = hs6.spos/(width-500) * 2;
+  
+  
   //apply emboss
- 
- 
   Kernel emboss = new Kernel(new float[][] {{-2 * scale_factor, -1 * scale_factor, 0 * scale_factor}, {-1 * scale_factor, 0 * scale_factor + 1, 1 * scale_factor}, {0 * scale_factor, 1 * scale_factor, 2 * scale_factor}});
   //apply brightness
  
@@ -504,19 +497,22 @@ void draw() {
   // labels
   textSize(16);
   fill(0, 0, 0);
-  text("Emboss", width/2-85, height/2+25);
+  text("Emboss", width/2-280, height/2+25);
   textSize(16);
-  text("Brightness", width/2-85, height/2+65);
+  text("Brightness", width/2-280, height/2+65);
   fill(0, 0, 0);
   textSize(16);
-  text("Sharpness", width/2-85, height/2+105);
+  text("Sharpness", width/2-280, height/2+105);
   fill(0, 0, 0);
   textSize(16);
-  text("Saturation", width/2-85, height/2+145);
+  text("Saturation", width/2-280, height/2+145);
   fill(0, 0, 0);
   textSize(16);
-  text("Hue", width/2-85, height/2+185);
-  fill(0, 0, 0);  
+  text("Hue", width/2-280, height/2+185);
+  fill(0, 0, 0);
+  textSize(16);
+  text("Resize", width/2-280, height/2+225);
+  fill(0, 0, 0);
   // buttons
    
   //rect(width/2-50, height/2+220, 100,50);
@@ -547,23 +543,26 @@ void setup() {
   adjustments[1] = brightness;
   //apply(adjustments, car, output);  don't apply effects at first. 
   //hs1 = new HScrollbar(0, height/2-8, width, 16, 16);
-  hs1 = new HScrollbar(0, height/2 + 40, width-100, 16, 1, 0);
-  hs2 = new HScrollbar(0, height/2 + 80, width-100, 16, 1, 1);
-  hs3 = new HScrollbar(0, height/2 + 120, width-100, 16, 1, 1);
-  hs4 = new HScrollbar(0, height/2 + 160, width-100, 16, 1, 1);
-  hs5 = new HScrollbar(0, height/2 + 200, width-100, 16, 1, 1);
-  //text("word",width/2, height/2+8);
-  button1 = new Button(width/2-50, height/2.0 + 245,  100, 50, "Reset", 7);
-  button2 = new Button(width/2-50, height/2.0 + 315,  100, 50, "Save", 10);
-  button3 = new Button(width/2-50, height/2.0 + 385,  100, 50, "Undo", 9);
-  button4 = new Button(width/2-50, height/2.0 + 455,  100, 50, "Export", 5);
- 
-  button_2_1 = new Button2(width - 80, height/2.0 + 40, 50,20, "hs1", 0);
-  button_2_2 = new Button2(width - 80, height/2.0 + 80, 50,20, "hs2", 0);
-  button_2_3 = new Button2(width - 80, height/2.0 + 120, 50,20, "hs3", 0);
-  button_2_4 = new Button2(width - 80, height/2.0 + 160, 50,20, "hs4", 0);
-  button_2_5 = new Button2(width - 80, height/2.0 + 200, 50,20, "hs5", 0);
+  hs1 = new HScrollbar(0, height/2 + 40, width-500, 16, 1, 0);
+  hs2 = new HScrollbar(0, height/2 + 80, width-500, 16, 1, 1);
+  hs3 = new HScrollbar(0, height/2 + 120, width-500, 16, 1, 1);
+  hs4 = new HScrollbar(0, height/2 + 160, width-500, 16, 1, 1);
+  hs5 = new HScrollbar(0, height/2 + 200, width-500, 16, 1, 1);
+  hs6 = new HScrollbar(0, height/2 + 240, width-500, 16, 1, 1);
   
+  //text("word",width/2, height/2+8);
+  
+  button1 = new Button(width - 300, height/2 + 55,  100, 50, "Reset", 7);
+  button2 = new Button(width - 300, height/2.0 + 125,  100, 50, "Save", 10);
+  button3 = new Button(width - 300, height/2.0 + 195,  100, 50, "Undo", 9);
+  button4 = new Button(width - 300, height/2.0 + 265,  100, 50, "Export", 5);
+ 
+  button_2_1 = new Button2(width - 490, height/2.0 + 40, 50,20, "hs1", 0);
+  button_2_2 = new Button2(width - 490, height/2.0 + 80, 50,20, "hs2", 0);
+  button_2_3 = new Button2(width - 490, height/2.0 + 120, 50,20, "hs3", 0);
+  button_2_4 = new Button2(width - 490, height/2.0 + 160, 50,20, "hs4", 0);
+  button_2_5 = new Button2(width - 490, height/2.0 + 200, 50,20, "hs5", 0);
+  button_2_6 = new Button2(width - 490, height/2.0 + 240, 50,20, "hs6", 0);
   
   image(car, 0, 0);
   image(output, car.width, 0);
