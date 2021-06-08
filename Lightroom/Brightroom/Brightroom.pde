@@ -411,13 +411,18 @@ void crop_reset() {
   crop_x = crop_y = crop_xx = crop_yy = 0;
 }
 
-void rresize(float scale6) {
-  print(scale6 + " ");
-  //float new_width = car2.width * scale6;
-  //float new_height = car2.height * scale6;
-  //if (new_width < car.width && new_height < car.height && new_width > 0 && new_height > 0) {
-  //  car2.resize(Math.round(new_width), Math.round(new_height));
-  //}
+void rresize(float scale6, PImage source, PImage destination) {
+  float new_scale = scale6; 
+  float new_width = source.width * new_scale;
+  float new_height = source.height * new_scale;
+    
+  new_width = Math.max(new_width, 1);
+  new_width = Math.min(car.width, new_width);
+  new_height = Math.max(new_height, 1);
+  new_height = Math.min(car.height, new_height);
+  
+  destination.resize(Math.round(new_width), Math.round(new_height));
+  
 }
 
 void draw() {
@@ -493,10 +498,12 @@ void draw() {
   }
   if (hs5_switch) {
     hueImage(scale5, temp, output);
+    temp = output.copy();
   }
   
   if (hs6_switch) {
-    rresize(scale6);
+    rresize(scale6, temp, output);
+    temp = output.copy();
   }
   
   // save copy of altered image for export
