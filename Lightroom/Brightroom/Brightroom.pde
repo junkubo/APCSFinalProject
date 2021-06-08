@@ -421,9 +421,9 @@ void rresize(float scale6, PImage source, PImage destination) {
   float new_width = source.width * new_scale;
   float new_height = source.height * new_scale;
     
-  new_width = Math.max(new_width, 1);
+  new_width = Math.max(new_width, 2);
   new_width = Math.min(car.width, new_width);
-  new_height = Math.max(new_height, 1);
+  new_height = Math.max(new_height, 2);
   new_height = Math.min(car.height, new_height);
   
   destination.resize(Math.round(new_width), Math.round(new_height));
@@ -434,7 +434,7 @@ void bblur(float scale7, PImage source, PImage destination) {
   float blur_amount = 1 - scale7;
   float orig_width = Math.round(destination.width);
   float orig_height = Math.round(destination.height);
-  destination.resize(Math.round(source.width * blur_amount), Math.round(source.height * blur_amount));
+  destination.resize(Math.max(Math.round(source.width * blur_amount),1), Math.max(Math.round(source.height * blur_amount), 1));
   destination.resize((int)orig_width, (int)orig_height);
 }
 
