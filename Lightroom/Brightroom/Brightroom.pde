@@ -222,12 +222,14 @@ class Button {
           float[] spos_t = spos_list.remove(spos_list.size()-1);
           hs1.xpos = spos_t[0]; hs2.xpos = spos_t[1]; hs3.xpos = spos_t[2]; hs4.xpos = spos_t[3]; hs5.xpos = spos_t[4];
           print("save values are: " + spos_t[0] + " " + spos_t[1] + " " + spos_t[2] + " " + spos_t[3] + " " + spos_t[4]);
-          hs1 = new HScrollbar(0, height/2 + 40, width-100, 16, 1, 0);
-          hs2 = new HScrollbar(0, height/2 + 80, width-100, 16, 1, 2);
-          hs3 = new HScrollbar(0, height/2 + 120, width-100, 16, 1, 1);
-          hs4 = new HScrollbar(0, height/2 + 160, width-100, 16, 1, 1);
-          hs5 = new HScrollbar(0, height/2 + 200, width-100, 16, 1, 1);
-         
+          hs1 = new HScrollbar(0, height/2 + 40, width-500, 16, 1, 0);
+          hs2 = new HScrollbar(0, height/2 + 80, width-500, 16, 1, 1);
+          hs3 = new HScrollbar(0, height/2 + 120, width-500, 16, 1, 1);
+          hs4 = new HScrollbar(0, height/2 + 160, width-500, 16, 1, 1);
+          hs5 = new HScrollbar(0, height/2 + 200, width-500, 16, 1, 1);
+          hs6 = new HScrollbar(0, height/2 + 240, width-500, 16, 1, 1);
+          hs7 = new HScrollbar(0, height/2 + 280, width-500, 16, 1, 0);     
+          
           hs1.update(); hs1.display();
           hs2.update(); hs2.display();
           hs3.update(); hs3.display();
