@@ -217,7 +217,7 @@ class Button {
     if (mousePressed && over && button_once) {
       if (button_text == "Reset") setup();
       if (button_text == "Save") {
-        float[] spos_t = {hs1.spos, hs2.spos, hs3.spos, hs4.spos, hs5.spos};
+        float[] spos_t = {hs1.spos, hs2.spos, hs3.spos, hs4.spos, hs5.spos, hs6.spos, hs7.spos};
         spos_list.add(spos_t);
         print(spos_list.size() + " ");
       }
@@ -231,8 +231,8 @@ class Button {
           hs3 = new HScrollbar(0, height/2 + 120, width-500, 16, 1, 1, true, spos_t[2]);
           hs4 = new HScrollbar(0, height/2 + 160, width-500, 16, 1, 1, true, spos_t[3]);
           hs5 = new HScrollbar(0, height/2 + 200, width-500, 16, 1, 1, true, spos_t[4]);
-          //hs6 = new HScrollbar(0, height/2 + 240, width-500, 16, 1, 1, true, spos_t[0]);
-          //hs7 = new HScrollbar(0, height/2 + 280, width-500, 16, 1, 0);     
+          hs6 = new HScrollbar(0, height/2 + 240, width-500, 16, 1, 1, true, spos_t[5]);
+          hs7 = new HScrollbar(0, height/2 + 280, width-500, 16, 1, 0, true, spos_t[6]);     
           
         } else {
           setup();
