@@ -113,14 +113,18 @@ class HScrollbar {
   boolean locked;
   float ratio;
 
-  HScrollbar (float xp, float yp, int sw, int sh, int l, float start) {
+  HScrollbar (float xp, float yp, int sw, int sh, int l, float start, boolean undo, float spos_undo) {
     swidth = sw;
     sheight = sh;
     int widthtoheight = sw - sh;
     ratio = (float)sw / (float)widthtoheight;
     xpos = xp;
     ypos = yp-sheight/2;
-    spos = start * (xpos + swidth/2 - sheight/2);
+    if (!undo) {
+      spos = start * (xpos + swidth/2 - sheight/2);
+    } else {
+      spos = spos_undo;
+    }
     
     newspos = spos;
     sposMin = xpos;
@@ -213,29 +217,25 @@ class Button {
     if (mousePressed && over && button_once) {
       if (button_text == "Reset") setup();
       if (button_text == "Save") {
-        float[] spos_t = {hs1.xpos, hs2.xpos, hs3.xpos, hs4.xpos, hs5.xpos};
+        float[] spos_t = {hs1.spos, hs2.spos, hs3.spos, hs4.spos, hs5.spos};
         spos_list.add(spos_t);
         print(spos_list.size() + " ");
       }
       if (button_text == "Undo") {
         if (spos_list.size() > 0) {
           float[] spos_t = spos_list.remove(spos_list.size()-1);
-          hs1.xpos = spos_t[0]; hs2.xpos = spos_t[1]; hs3.xpos = spos_t[2]; hs4.xpos = spos_t[3]; hs5.xpos = spos_t[4];
-          print("save values are: " + spos_t[0] + " " + spos_t[1] + " " + spos_t[2] + " " + spos_t[3] + " " + spos_t[4]);
-          hs1 = new HScrollbar(0, height/2 + 40, width-500, 16, 1, 0);
-          hs2 = new HScrollbar(0, height/2 + 80, width-500, 16, 1, 1);
-          hs3 = new HScrollbar(0, height/2 + 120, width-500, 16, 1, 1);
-          hs4 = new HScrollbar(0, height/2 + 160, width-500, 16, 1, 1);
-          hs5 = new HScrollbar(0, height/2 + 200, width-500, 16, 1, 1);
-          hs6 = new HScrollbar(0, height/2 + 240, width-500, 16, 1, 1);
-          hs7 = new HScrollbar(0, height/2 + 280, width-500, 16, 1, 0);     
           
-          hs1.update(); hs1.display();
-          hs2.update(); hs2.display();
-          hs3.update(); hs3.display();
-          hs4.update(); hs4.display();
-          hs5.update(); hs5.display();
-          hs6.update(); hs6.display();
+          //print("save values are: " + spos_t[0] + " " + spos_t[1] + " " + spos_t[2] + " " + spos_t[3] + " " + spos_t[4]);
+          hs1 = new HScrollbar(0, height/2 + 40, width-500, 16, 1, 0, true, spos_t[0]);
+          hs2 = new HScrollbar(0, height/2 + 80, width-500, 16, 1, 1, true, spos_t[1]);
+          hs3 = new HScrollbar(0, height/2 + 120, width-500, 16, 1, 1, true, spos_t[2]);
+          hs4 = new HScrollbar(0, height/2 + 160, width-500, 16, 1, 1, true, spos_t[3]);
+          hs5 = new HScrollbar(0, height/2 + 200, width-500, 16, 1, 1, true, spos_t[4]);
+          //hs6 = new HScrollbar(0, height/2 + 240, width-500, 16, 1, 1, true, spos_t[0]);
+          //hs7 = new HScrollbar(0, height/2 + 280, width-500, 16, 1, 0);     
+          
+        } else {
+          setup();
         }
         
       }
@@ -576,13 +576,13 @@ void setup() {
   adjustments[1] = brightness;
   //apply(adjustments, car, output);  don't apply effects at first. 
   //hs1 = new HScrollbar(0, height/2-8, width, 16, 16);
-  hs1 = new HScrollbar(0, height/2 + 40, width-500, 16, 1, 0);
-  hs2 = new HScrollbar(0, height/2 + 80, width-500, 16, 1, 1);
-  hs3 = new HScrollbar(0, height/2 + 120, width-500, 16, 1, 1);
-  hs4 = new HScrollbar(0, height/2 + 160, width-500, 16, 1, 1);
-  hs5 = new HScrollbar(0, height/2 + 200, width-500, 16, 1, 1);
-  hs6 = new HScrollbar(0, height/2 + 240, width-500, 16, 1, 1);
-  hs7 = new HScrollbar(0, height/2 + 280, width-500, 16, 1, 0);
+  hs1 = new HScrollbar(0, height/2 + 40, width-500, 16, 1, 0, false, 0);
+  hs2 = new HScrollbar(0, height/2 + 80, width-500, 16, 1, 1, false, 0);
+  hs3 = new HScrollbar(0, height/2 + 120, width-500, 16, 1, 1, false, 0);
+  hs4 = new HScrollbar(0, height/2 + 160, width-500, 16, 1, 1, false, 0);
+  hs5 = new HScrollbar(0, height/2 + 200, width-500, 16, 1, 1, false, 0);
+  hs6 = new HScrollbar(0, height/2 + 240, width-500, 16, 1, 1, false, 0);
+  hs7 = new HScrollbar(0, height/2 + 280, width-500, 16, 1, 0, false, 0);
     
   //text("word",width/2, height/2+8);
   
