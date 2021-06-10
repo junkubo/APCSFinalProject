@@ -112,22 +112,6 @@ void shadowsImage(float scale, PImage source, PImage destination) {
   colorMode(RGB, 255);
 }
 
-void contrastImage(float scale, PImage source, PImage destination) {
-  print("scale: " + scale + "  ");
-    for (int y = 0; y < source.height; y++) {
-        for (int x = 0; x < source.width; x++) {
-            destination.set(x, y, highlightsPixel(scale, source, x, y));
-    }
-  }
-  colorMode(RGB, 255);
-    for (int y = 0; y < source.height; y++) {
-        for (int x = 0; x < source.width; x++) {
-            destination.set(x, y, shadowsPixel(-scale, source, x, y));
-    }
-  }
-  colorMode(RGB, 255);
-  
-}
 
 color saturatePixel(float scale, PImage source, int x, int y) {
     colorMode(HSB, 255);
@@ -148,8 +132,8 @@ color highlightsPixel(float scale, PImage source, int x, int y) {
     float h = hue(source.get(x, y));
     float s = saturation(source.get(x, y));
     float l = brightness(source.get(x, y));
-    float highlights = scale * 1.5 * l;
-    return color(h, s, l+highlights);
+    float highlights = scale * 1.2 * l;
+    return color(h, s, constrain(l+highlights, 0, 255));
 }
 
 color shadowsPixel(float scale, PImage source, int x, int y) {
@@ -157,8 +141,8 @@ color shadowsPixel(float scale, PImage source, int x, int y) {
     float h = hue(source.get(x, y));
     float s = saturation(source.get(x, y));
     float l = brightness(source.get(x, y));
-    float shadows = scale * 1.5 * (255 - l);
-    return color(h, s, l+shadows);
+    float shadows = scale * 1.2 * (255 - l);
+    return color(h, s, constrain(l+shadows, 0, 255));
 }
 
 class HScrollbar {
@@ -487,9 +471,13 @@ void crop_reset() {
 
 void rresize(float scale6, PImage source, PImage destination) {
   float new_scale = scale6; 
-  float new_width = source.width * new_scale;
-  float new_height = source.height * new_scale;
-    
+  float new_width = source.width;
+  float new_height = source.height;;
+  if (source.width  < car.width && source.height < car.height) {
+    new_width = source.width * new_scale;
+    new_height = source.height * new_scale;
+  } 
+  
   new_width = Math.max(new_width, 2);
   new_width = Math.min(car.width, new_width);
   new_height = Math.max(new_height, 2);
@@ -613,7 +601,9 @@ void draw() {
     //print(scale9 + "     ");
   }
   if (hs10_switch) {
-    contrastImage(scale10, temp, output);
+    highlightsImage(scale10, temp, output);
+    temp = output.copy();
+    shadowsImage(-scale10, temp, output);
     temp = output.copy();
     //print(scale10 + "     ");
   }
