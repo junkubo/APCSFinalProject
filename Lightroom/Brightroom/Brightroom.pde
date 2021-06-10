@@ -5,6 +5,8 @@ HScrollbar hs4;
 HScrollbar hs5;
 HScrollbar hs6;
 HScrollbar hs7;
+HScrollbar hs8;
+HScrollbar hs9;
 
 boolean only_onebar = true;
 
@@ -20,6 +22,8 @@ Button2 button_2_4;
 Button2 button_2_5;
 Button2 button_2_6;
 Button2 button_2_7;
+Button2 button_2_8;
+Button2 button_2_9;
 
 boolean hs1_switch = true;
 boolean hs2_switch = true;
@@ -28,6 +32,8 @@ boolean hs4_switch = true;
 boolean hs5_switch = true;
 boolean hs6_switch = true;
 boolean hs7_switch = true;
+boolean hs8_switch = true;
+boolean hs9_switch = true;
 
 boolean crop = false; boolean crop_rect = false;
 int crop_x = 0; int crop_y = 0; int crop_xx = 0; int crop_yy = 0;
@@ -86,7 +92,22 @@ void hueImage(float scale, PImage source, PImage destination) {
   }
   colorMode(RGB, 255);
 }
-
+void highlightsImage(float scale, PImage source, PImage destination) {
+    for (int y = 0; y < source.height; y++) {
+        for (int x = 0; x < source.width; x++) {
+            destination.set(x, y, highlightsPixel(scale, source, x, y));
+    }
+  }
+  colorMode(RGB, 255);
+}
+void shadowsImage(float scale, PImage source, PImage destination) {
+    for (int y = 0; y < source.height; y++) {
+        for (int x = 0; x < source.width; x++) {
+            destination.set(x, y, shadowsPixel(scale, source, x, y));
+    }
+  }
+  colorMode(RGB, 255);
+}
 color saturatePixel(float scale, PImage source, int x, int y) {
     colorMode(HSB, 255);
     float h = hue(source.get(x, y));
@@ -94,13 +115,29 @@ color saturatePixel(float scale, PImage source, int x, int y) {
     float l = brightness(source.get(x, y));
     return color(h, s + scale * 100, l);
 }
-
 color huePixel(float scale, PImage source, int x, int y) {
     colorMode(HSB, 255);
     float h = hue(source.get(x, y));
     float s = saturation(source.get(x, y));
     float l = brightness(source.get(x, y));
     return color(constrain(h + scale * 100, 0, 255), s, l);
+}
+color highlightsPixel(float scale, PImage source, int x, int y) {
+    colorMode(HSB, 255);
+    float h = hue(source.get(x, y));
+    float s = saturation(source.get(x, y));
+    float l = brightness(source.get(x, y));
+    float highlights = scale * 1.5 * l;
+    return color(h, s, l+highlights);
+}
+
+color shadowsPixel(float scale, PImage source, int x, int y) {
+    colorMode(HSB, 255);
+    float h = hue(source.get(x, y));
+    float s = saturation(source.get(x, y));
+    float l = brightness(source.get(x, y));
+    float shadows = scale * 1.5 * (255 - l);
+    return color(h, s, l+shadows);
 }
 
 class HScrollbar {
@@ -217,7 +254,7 @@ class Button {
     if (mousePressed && over && button_once) {
       if (button_text == "Reset") setup();
       if (button_text == "Save") {
-        float[] spos_t = {hs1.spos, hs2.spos, hs3.spos, hs4.spos, hs5.spos, hs6.spos, hs7.spos};
+        float[] spos_t = {hs1.spos, hs2.spos, hs3.spos, hs4.spos, hs5.spos, hs6.spos, hs7.spos, hs8.spos, hs9.spos};
         spos_list.add(spos_t);
         print(spos_list.size() + " ");
       }
@@ -232,7 +269,8 @@ class Button {
           hs4 = new HScrollbar(0, height/2 + 160, width-500, 16, 1, 1, true, spos_t[3]);
           hs5 = new HScrollbar(0, height/2 + 200, width-500, 16, 1, 1, true, spos_t[4]);
           hs6 = new HScrollbar(0, height/2 + 240, width-500, 16, 1, 1, true, spos_t[5]);
-          hs7 = new HScrollbar(0, height/2 + 280, width-500, 16, 1, 0, true, spos_t[6]);     
+          hs7 = new HScrollbar(0, height/2 + 280, width-500, 16, 1, 0, true, spos_t[6]);    
+          hs7 = new HScrollbar(0, height/2 + 320, width-500, 16, 1, 0, true, spos_t[7]);    
           
         } else {
           setup();
@@ -309,6 +347,8 @@ class Button2 {
         if (button_text == "hs5") hs5_switch = false;
         if (button_text == "hs6") hs6_switch = false;
         if (button_text == "hs7") hs7_switch = false;
+        if (button_text == "hs8") hs8_switch = false;
+        if (button_text == "hs9") hs9_switch = false;
         only_once = false;
       } else {
         text = "on";
@@ -319,6 +359,8 @@ class Button2 {
         if (button_text == "hs5") hs5_switch = true;
         if (button_text == "hs6") hs6_switch = true;
         if (button_text == "hs7") hs7_switch = true;
+        if (button_text == "hs8") hs8_switch = true;
+        if (button_text == "hs9") hs9_switch = true;
         only_once = false;
       }
     }
@@ -460,6 +502,8 @@ void draw() {
   hs5.update(); hs5.display();
   hs6.update(); hs6.display();
   hs7.update(); hs7.display();
+  hs8.update(); hs8.display();
+  hs9.update(); hs9.display();
   
   button1.update(); button1.display();
   button2.update(); button2.display();
@@ -482,6 +526,8 @@ void draw() {
   float scale5 = (hs5.spos/(width-500)) * 5 - 2.5;
   float scale6 = (hs6.spos/(width-500)) * 2;
   float scale7 = (hs7.spos/(width-500));
+  float scale8 = (hs8.spos/(width-500)) * 2 - 1;
+  float scale9 = (hs9.spos/(width-500)) * 2 - 1;
   
   //apply emboss
   Kernel emboss = new Kernel(new float[][] {{-2 * scale_factor, -1 * scale_factor, 0 * scale_factor}, {-1 * scale_factor, 0 * scale_factor + 1, 1 * scale_factor}, {0 * scale_factor, 1 * scale_factor, 2 * scale_factor}});
@@ -525,7 +571,16 @@ void draw() {
     bblur(scale7, temp, output);
     temp = output.copy();
   }
-  
+  if (hs8_switch) {
+    highlightsImage(scale8, temp, output);
+    temp = output.copy();
+    print(scale8 + "     ");
+  }
+  if (hs9_switch) {
+    shadowsImage(scale9, temp, output);
+    temp = output.copy();
+    print(scale9 + "     ");
+  }
   
   // save copy of altered image for export
   forExport = output.copy();
@@ -559,7 +614,7 @@ void draw() {
 void setup() {
   //PImage car = loadImage("basquiat.jpeg");
   // resize image if too large.
-  car = loadImage("basquiat.jpeg");
+  car = loadImage("redcar.jpg");
   if (car.height > 540) car.resize(0, 540);
   if (car.width > 960) car.resize(960, 0);
   //PImage output = car.copy();
@@ -583,6 +638,8 @@ void setup() {
   hs5 = new HScrollbar(0, height/2 + 200, width-500, 16, 1, 1, false, 0);
   hs6 = new HScrollbar(0, height/2 + 240, width-500, 16, 1, 1, false, 0);
   hs7 = new HScrollbar(0, height/2 + 280, width-500, 16, 1, 0, false, 0);
+  hs8 = new HScrollbar(0, height/2 + 320, width-500, 16, 1, 0, false, 0);
+  hs9 = new HScrollbar(0, height/2 + 360, width-500, 16, 1, 0, false, 0);
     
   //text("word",width/2, height/2+8);
   
@@ -598,6 +655,8 @@ void setup() {
   button_2_5 = new Button2(width - 490, height/2.0 + 200, 50,20, "hs5", 0);
   button_2_6 = new Button2(width - 490, height/2.0 + 240, 50,20, "hs6", 0);
   button_2_7 = new Button2(width - 490, height/2.0 + 280, 50,20, "hs7", 0);
+  button_2_8 = new Button2(width - 490, height/2.0 + 280, 50,20, "hs8", 0);
+  button_2_9 = new Button2(width - 490, height/2.0 + 280, 50,20, "hs9", 0);
   
   image(car, 0, 0);
   image(output, car.width, 0);
