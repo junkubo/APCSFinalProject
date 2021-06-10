@@ -539,7 +539,7 @@ void draw() {
   //convert hs1.spos to 0-1 scale factor
   float scale_factor = hs1.spos/width;
   float scale2 = (hs2.spos/(width-500)) * 2;
-  float scale3 = (hs3.spos/(width-500)) * 2;
+  float scale3 = (hs3.spos/(width-500)) * 2 -1;
   float scale4 = (hs4.spos/(width-500)) * 5 - 2.5;
   float scale5 = (hs5.spos/(width-500)) * 5 - 2.5;
   float scale6 = (hs6.spos/(width-500)) * 2;
@@ -554,7 +554,7 @@ void draw() {
  
   Kernel brightness = new Kernel(new float[][] { {0,0,0},{0, scale2, 0},{0,0,0}});
      
-  Kernel sharpness = new Kernel(new float[][] {{0, -1 * scale3, 0},{-1 * scale3, 5*scale3, -1*scale3},{0, -1* scale3,0}});
+  Kernel sharpness = new Kernel(new float[][] {{0, -1 * scale3, 0},{-1 * scale3, 4*scale3+1, -1*scale3},{0, -1* scale3,0}});
  
   //emboss.imageApply(car,output);
   Kernel[] adjustments = new Kernel[3];
