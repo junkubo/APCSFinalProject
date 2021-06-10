@@ -111,6 +111,24 @@ void shadowsImage(float scale, PImage source, PImage destination) {
   }
   colorMode(RGB, 255);
 }
+
+void contrastImage(float scale, PImage source, PImage destination) {
+  print("scale: " + scale + "  ");
+    for (int y = 0; y < source.height; y++) {
+        for (int x = 0; x < source.width; x++) {
+            destination.set(x, y, highlightsPixel(scale, source, x, y));
+    }
+  }
+  colorMode(RGB, 255);
+    for (int y = 0; y < source.height; y++) {
+        for (int x = 0; x < source.width; x++) {
+            destination.set(x, y, shadowsPixel(-scale, source, x, y));
+    }
+  }
+  colorMode(RGB, 255);
+  
+}
+
 color saturatePixel(float scale, PImage source, int x, int y) {
     colorMode(HSB, 255);
     float h = hue(source.get(x, y));
@@ -274,8 +292,8 @@ class Button {
           hs6 = new HScrollbar(0, height/2 + 240, width-500, 16, 1, 1, true, spos_t[5]);
           hs7 = new HScrollbar(0, height/2 + 280, width-500, 16, 1, 0, true, spos_t[6]);    
           hs8 = new HScrollbar(0, height/2 + 320, width-500, 16, 1, 0, true, spos_t[7]);    
-          hs9 = new HScrollbar(0, height/2 + 320, width-500, 16, 1, 0, true, spos_t[8]);    
-          hs10 = new HScrollbar(0, height/2 + 320, width-500, 16, 1, 0, true, spos_t[9]);    
+          hs9 = new HScrollbar(0, height/2 + 360, width-500, 16, 1, 0, true, spos_t[8]);    
+          hs10 = new HScrollbar(0, height/2 + 400, width-500, 16, 1, 0, true, spos_t[9]);    
           
         } else {
           setup();
@@ -595,7 +613,7 @@ void draw() {
     //print(scale9 + "     ");
   }
   if (hs10_switch) {
-    shadowsImage(scale10, temp, output);
+    contrastImage(scale10, temp, output);
     temp = output.copy();
     //print(scale10 + "     ");
   }
