@@ -472,17 +472,26 @@ void crop_reset() {
 void rresize(float scale6, PImage source, PImage destination) {
   float new_scale = scale6; 
   float new_width = source.width;
-  float new_height = source.height;;
-  if (source.width  < car.width && source.height < car.height) {
+  float new_height = source.height;
+  
+  if (source.width <= car.width && source.height <= car.height) {
     new_width = source.width * new_scale;
-    new_height = source.height * new_scale;
+    new_height = source.height * new_scale;;
   } 
   
+  float aspect_ratio = source.width / source.height;
+  print("aspect: " + aspect_ratio + " " + source.width + " " + source.height + " ");
   new_width = Math.max(new_width, 2);
-  new_width = Math.min(car.width, new_width);
   new_height = Math.max(new_height, 2);
-  new_height = Math.min(car.height, new_height);
   
+  if (new_width > car.width) {
+    new_width = car.width;
+    new_height = new_width / aspect_ratio;
+  }
+  if (new_height > car.height) {
+    new_height = car.height;
+    new_width =  car.height * aspect_ratio;
+  }
   destination.resize(Math.round(new_width), Math.round(new_height));
   
 }
