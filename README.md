@@ -15,3 +15,6 @@ Click on any of the 18 buttons to activate them. Presets will apply prespecified
 Development Log:
 - Created a skeleton of the initial code, based on an earlier classwork where we applied kernels to images.
 - Added a slider, successfully tied it to the magnitude of an "emboss" kernel, resulting in the slider controlling how embossed the image is, from a scale of -1 to 1. Likely will be changed to a scale from 0 to 1 for emboss in the future, because -1 embossed looks similar to 1 embossed. The -1 to 1 scale will be useful for other kernels.
+- Added brightness, sharpness, saturation, hue, resize, blur, highlights, shadows, and contrast sliders, with toggle buttons.
+- Added reset, save, undo, and export control buttons. Added vivid, cinematic, film, and sketch preset buttons.
+- Added crop using mouse position on output preview, using space to crop and c to cancel.
