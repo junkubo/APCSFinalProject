@@ -15,6 +15,7 @@ Button button1;
 Button button2;
 Button button3;
 Button button4;
+Button button5; Button button6; Button button7; Button button8;
 
 Button2 button_2_1;
 Button2 button_2_2;
@@ -37,6 +38,8 @@ boolean hs7_switch = true;
 boolean hs8_switch = true;
 boolean hs9_switch = true;
 boolean hs10_switch = true;
+
+float adjustment_factor = 0.9887324;
 
 boolean crop = false; boolean crop_rect = false;
 int crop_x = 0; int crop_y = 0; int crop_xx = 0; int crop_yy = 0;
@@ -287,6 +290,55 @@ class Button {
       if (button_text == "Export") {
         forExport.save("Export.tif");
       }
+      if (button_text == "Vivid") {
+          hs1 = new HScrollbar(0, height/2 + 40, width-500, 16, 1, 0, true, 0);
+          hs2 = new HScrollbar(0, height/2 + 80, width-500, 16, 1, 1, true, 680);
+          hs3 = new HScrollbar(0, height/2 + 120, width-500, 16, 1, 1, true, 1053);
+          hs4 = new HScrollbar(0, height/2 + 160, width-500, 16, 1, 1, true, 750);
+          hs5 = new HScrollbar(0, height/2 + 200, width-500, 16, 1, 1, true, 702);
+          hs6 = new HScrollbar(0, height/2 + 240, width-500, 16, 1, 1, true, 702);
+          hs7 = new HScrollbar(0, height/2 + 280, width-500, 16, 1, 0, true, 0);    
+          hs8 = new HScrollbar(0, height/2 + 320, width-500, 16, 1, 0, true, 702);    
+          hs9 = new HScrollbar(0, height/2 + 360, width-500, 16, 1, 0, true, 600);    
+          hs10 = new HScrollbar(0, height/2 + 400, width-500, 16, 1, 0, true, 900);
+      }
+      if (button_text == "Cinematic") {
+          hs1 = new HScrollbar(0, height/2 + 40, width-500, 16, 1, 0, true, 0);
+          hs2 = new HScrollbar(0, height/2 + 80, width-500, 16, 1, 1, true, 650);
+          hs3 = new HScrollbar(0, height/2 + 120, width-500, 16, 1, 1, true, 804);
+          hs4 = new HScrollbar(0, height/2 + 160, width-500, 16, 1, 1, true, 750);
+          hs5 = new HScrollbar(0, height/2 + 200, width-500, 16, 1, 1, true, 702);
+          hs6 = new HScrollbar(0, height/2 + 240, width-500, 16, 1, 1, true, 702);
+          hs7 = new HScrollbar(0, height/2 + 280, width-500, 16, 1, 0, true, 0);    
+          hs8 = new HScrollbar(0, height/2 + 320, width-500, 16, 1, 0, true, 730);    
+          hs9 = new HScrollbar(0, height/2 + 360, width-500, 16, 1, 0, true, 600);    
+          hs10 = new HScrollbar(0, height/2 + 400, width-500, 16, 1, 0, true, 675);
+      }
+          
+      if (button_text == "Film") {
+          hs1 = new HScrollbar(0, height/2 + 40, width-500, 16, 1, 0, true, 0);
+          hs2 = new HScrollbar(0, height/2 + 80, width-500, 16, 1, 1, true, 650);
+          hs3 = new HScrollbar(0, height/2 + 120, width-500, 16, 1, 1, true, 600);
+          hs4 = new HScrollbar(0, height/2 + 160, width-500, 16, 1, 1, true, 0);
+          hs5 = new HScrollbar(0, height/2 + 200, width-500, 16, 1, 1, true, 702);
+          hs6 = new HScrollbar(0, height/2 + 240, width-500, 16, 1, 1, true, 702);
+          hs7 = new HScrollbar(0, height/2 + 280, width-500, 16, 1, 0, true, 0);    
+          hs8 = new HScrollbar(0, height/2 + 320, width-500, 16, 1, 0, true, 804);    
+          hs9 = new HScrollbar(0, height/2 + 360, width-500, 16, 1, 0, true, 600);    
+          hs10 = new HScrollbar(0, height/2 + 400, width-500, 16, 1, 0, true, 600);
+      }
+      if (button_text == "Sketch") {
+          hs1 = new HScrollbar(0, height/2 + 40, width-500, 16, 1, 0, true, 1404);
+          hs2 = new HScrollbar(0, height/2 + 80, width-500, 16, 1, 1, true, 702);
+          hs3 = new HScrollbar(0, height/2 + 120, width-500, 16, 1, 1, true, 1404);
+          hs4 = new HScrollbar(0, height/2 + 160, width-500, 16, 1, 1, true, 0);
+          hs5 = new HScrollbar(0, height/2 + 200, width-500, 16, 1, 1, true, 702);
+          hs6 = new HScrollbar(0, height/2 + 240, width-500, 16, 1, 1, true, 702);
+          hs7 = new HScrollbar(0, height/2 + 280, width-500, 16, 1, 0, true, 0);    
+          hs8 = new HScrollbar(0, height/2 + 320, width-500, 16, 1, 0, true, 750);    
+          hs9 = new HScrollbar(0, height/2 + 360, width-500, 16, 1, 0, true, 750);    
+          hs10 = new HScrollbar(0, height/2 + 400, width-500, 16, 1, 0, true, 1404);
+      }
       button_once = false;
     }
     if (!mousePressed) {
@@ -479,8 +531,7 @@ void rresize(float scale6, PImage source, PImage destination) {
     new_height = source.height * new_scale;;
   } 
   
-  float aspect_ratio = source.width / source.height;
-  print("aspect: " + aspect_ratio + " " + source.width + " " + source.height + " ");
+  float aspect_ratio = source.width * 1.0 / source.height;
   new_width = Math.max(new_width, 2);
   new_height = Math.max(new_height, 2);
   
@@ -532,6 +583,11 @@ void draw() {
   button2.update(); button2.display();
   button3.update(); button3.display();
   button4.update(); button4.display();
+  button5.update(); button5.display();
+  button6.update(); button6.display();
+  button7.update(); button7.display();
+  button8.update(); button8.display();
+ 
  
   button_2_1.update(); button_2_1.display();
   button_2_2.update(); button_2_2.display();
@@ -546,16 +602,16 @@ void draw() {
  
  
   //convert hs1.spos to 0-1 scale factor
-  float scale_factor = hs1.spos/width;
-  float scale2 = (hs2.spos/(width-500)) * 2;
-  float scale3 = (hs3.spos/(width-500)) * 2 -1;
-  float scale4 = (hs4.spos/(width-500)) * 5 - 2.5;
-  float scale5 = (hs5.spos/(width-500)) * 5 - 2.5;
-  float scale6 = (hs6.spos/(width-500)) * 2;
-  float scale7 = (hs7.spos/(width-500));
-  float scale8 = (hs8.spos/(width-500)) * 2 - 1;
-  float scale9 = (hs9.spos/(width-500)) * 2 - 1;
-  float scale10 = (hs10.spos/(width-500)) * 2 - 1;
+  float scale_factor = (hs1.spos/width) / adjustment_factor;
+  float scale2 = ((hs2.spos/(width-500)) * 2) / adjustment_factor;
+  float scale3 = ((hs3.spos/(width-500)) * 2 -1) / adjustment_factor;
+  float scale4 = ((hs4.spos/(width-500)) * 5 - 2.5) / adjustment_factor;
+  float scale5 = ((hs5.spos/(width-500)) * 5 - 2.5) / adjustment_factor;
+  float scale6 = ((hs6.spos/(width-500)) * 2) / adjustment_factor;
+  float scale7 = ((hs7.spos/(width-500))) / adjustment_factor;
+  float scale8 = ((hs8.spos/(width-500)) * 2 - 1) / adjustment_factor;
+  float scale9 = ((hs9.spos/(width-500)) * 2 - 1) / adjustment_factor;
+  float scale10 = ((hs10.spos/(width-500)) * 2 - 1) / adjustment_factor;
   
   //apply emboss
   Kernel emboss = new Kernel(new float[][] {{-2 * scale_factor, -1 * scale_factor, 0 * scale_factor}, {-1 * scale_factor, 0 * scale_factor + 1, 1 * scale_factor}, {0 * scale_factor, 1 * scale_factor, 2 * scale_factor}});
@@ -653,7 +709,7 @@ void draw() {
 void setup() {
   //PImage car = loadImage("basquiat.jpeg");
   // resize image if too large.
-  car = loadImage("redcar.jpg");
+  car = loadImage("yyy.jpg");
   if (car.height > 540) car.resize(0, 540);
   if (car.width > 960) car.resize(960, 0);
   //PImage output = car.copy();
@@ -682,11 +738,20 @@ void setup() {
   hs10 = new HScrollbar(0, height/2 + 400, width-500, 16, 1, 1, false, 0);
   
   //text("word",width/2, height/2+8);
+  fill(50);
+  text("Presets", width-280, height/2+40);
   
-  button1 = new Button(width - 300, height/2 + 55,  100, 50, "Reset", 7);
-  button2 = new Button(width - 300, height/2.0 + 125,  100, 50, "Save", 10);
-  button3 = new Button(width - 300, height/2.0 + 195,  100, 50, "Undo", 9);
-  button4 = new Button(width - 300, height/2.0 + 265,  100, 50, "Export", 5);
+  
+  button1 = new Button(width - 400, height/2 + 100,  100, 50, "Reset", 7);
+  button2 = new Button(width - 400, height/2.0 + 170,  100, 50, "Save", 10);
+  button3 = new Button(width - 400, height/2.0 + 240,  100, 50, "Undo", 9);
+  button4 = new Button(width - 400, height/2.0 + 310,  100, 50, "Export", 5);
+  
+  button5 = new Button(width - 280, height/2 + 100,  100, 50, "Vivid", 2);
+  button6 = new Button(width - 280, height/2.0 + 170,  100, 50, "Cinematic", 2);
+  button7 = new Button(width - 280, height/2.0 + 240,  100, 50, "Film", 2);
+  button8 = new Button(width - 280, height/2.0 + 310,  100, 50, "Sketch", 2);
+ 
  
   button_2_1 = new Button2(width - 490, height/2.0 + 40, 50,20, "hs1", 0);
   button_2_2 = new Button2(width - 490, height/2.0 + 80, 50,20, "hs2", 0);
