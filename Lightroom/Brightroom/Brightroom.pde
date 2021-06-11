@@ -293,19 +293,19 @@ class Button {
       if (button_text == "Vivid") {
           hs1 = new HScrollbar(0, height/2 + 40, width-500, 16, 1, 0, true, 0);
           hs2 = new HScrollbar(0, height/2 + 80, width-500, 16, 1, 1, true, 680);
-          hs3 = new HScrollbar(0, height/2 + 120, width-500, 16, 1, 1, true, 1053);
+          hs3 = new HScrollbar(0, height/2 + 120, width-500, 16, 1, 1, true, 850);
           hs4 = new HScrollbar(0, height/2 + 160, width-500, 16, 1, 1, true, 750);
           hs5 = new HScrollbar(0, height/2 + 200, width-500, 16, 1, 1, true, 702);
           hs6 = new HScrollbar(0, height/2 + 240, width-500, 16, 1, 1, true, 702);
           hs7 = new HScrollbar(0, height/2 + 280, width-500, 16, 1, 0, true, 0);    
-          hs8 = new HScrollbar(0, height/2 + 320, width-500, 16, 1, 0, true, 702);    
-          hs9 = new HScrollbar(0, height/2 + 360, width-500, 16, 1, 0, true, 600);    
+          hs8 = new HScrollbar(0, height/2 + 320, width-500, 16, 1, 0, true, 750);    
+          hs9 = new HScrollbar(0, height/2 + 360, width-500, 16, 1, 0, true, 750);    
           hs10 = new HScrollbar(0, height/2 + 400, width-500, 16, 1, 0, true, 900);
       }
       if (button_text == "Cinematic") {
           hs1 = new HScrollbar(0, height/2 + 40, width-500, 16, 1, 0, true, 0);
-          hs2 = new HScrollbar(0, height/2 + 80, width-500, 16, 1, 1, true, 650);
-          hs3 = new HScrollbar(0, height/2 + 120, width-500, 16, 1, 1, true, 804);
+          hs2 = new HScrollbar(0, height/2 + 80, width-500, 16, 1, 1, true, 675);
+          hs3 = new HScrollbar(0, height/2 + 120, width-500, 16, 1, 1, true, 775);
           hs4 = new HScrollbar(0, height/2 + 160, width-500, 16, 1, 1, true, 750);
           hs5 = new HScrollbar(0, height/2 + 200, width-500, 16, 1, 1, true, 702);
           hs6 = new HScrollbar(0, height/2 + 240, width-500, 16, 1, 1, true, 702);
@@ -709,7 +709,7 @@ void draw() {
 void setup() {
   //PImage car = loadImage("basquiat.jpeg");
   // resize image if too large.
-  car = loadImage("yyy.jpg");
+  car = loadImage("temple.jpg");
   if (car.height > 540) car.resize(0, 540);
   if (car.width > 960) car.resize(960, 0);
   //PImage output = car.copy();
