@@ -679,6 +679,10 @@ void draw() {
   image(car, 0, 0);
   image(output, car.width, 0);
   
+  fill(50);
+  text("Controls", width-383, height/2+60);
+  text("Presets", width-260, height/2+60);
+  
   crop_update();
   crop_draw();
   // labels
@@ -738,8 +742,6 @@ void setup() {
   hs10 = new HScrollbar(0, height/2 + 400, width-500, 16, 1, 1, false, 0);
   
   //text("word",width/2, height/2+8);
-  fill(50);
-  text("Presets", width-280, height/2+40);
   
   
   button1 = new Button(width - 400, height/2 + 100,  100, 50, "Reset", 7);
@@ -747,10 +749,10 @@ void setup() {
   button3 = new Button(width - 400, height/2.0 + 240,  100, 50, "Undo", 9);
   button4 = new Button(width - 400, height/2.0 + 310,  100, 50, "Export", 5);
   
-  button5 = new Button(width - 280, height/2 + 100,  100, 50, "Vivid", 2);
-  button6 = new Button(width - 280, height/2.0 + 170,  100, 50, "Cinematic", 2);
-  button7 = new Button(width - 280, height/2.0 + 240,  100, 50, "Film", 2);
-  button8 = new Button(width - 280, height/2.0 + 310,  100, 50, "Sketch", 2);
+  button5 = new Button(width - 280, height/2 + 100,  100, 50, "Vivid", 10);
+  button6 = new Button(width - 280, height/2.0 + 170,  100, 50, "Cinematic", -9);
+  button7 = new Button(width - 280, height/2.0 + 240,  100, 50, "Film", 12);
+  button8 = new Button(width - 280, height/2.0 + 310,  100, 50, "Sketch", 4);
  
  
   button_2_1 = new Button2(width - 490, height/2.0 + 40, 50,20, "hs1", 0);
@@ -763,6 +765,8 @@ void setup() {
   button_2_8 = new Button2(width - 490, height/2.0 + 320, 50,20, "hs8", 0);
   button_2_9 = new Button2(width - 490, height/2.0 + 360, 50,20, "hs9", 0);
   button_2_10 = new Button2(width - 490, height/2.0 + 400, 50,20, "hs10", 0);
+  
+  hs1_switch = hs2_switch = hs3_switch = hs4_switch = hs5_switch = hs6_switch = hs7_switch = hs8_switch = hs9_switch = hs10_switch = true;
   
   image(car, 0, 0);
   image(output, car.width, 0);
