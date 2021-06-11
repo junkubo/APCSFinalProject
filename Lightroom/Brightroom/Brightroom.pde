@@ -713,7 +713,7 @@ void draw() {
 void setup() {
   //PImage car = loadImage("basquiat.jpeg");
   // resize image if too large.
-  car = loadImage("temple.jpg");
+  car = loadImage("temple2.jpg");
   if (car.height > 540) car.resize(0, 540);
   if (car.width > 960) car.resize(960, 0);
   //PImage output = car.copy();
